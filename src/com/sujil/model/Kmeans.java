@@ -142,7 +142,7 @@ public class Kmeans {
 		generalizeCluster();
 		
 		// At this point, everything is correctly clustered into their own circle.
-		printClusters();
+		//printClusters();
 
 	}
 	

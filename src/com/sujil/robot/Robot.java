@@ -98,20 +98,23 @@ public class Robot {
 	 * It makes the robot travel one unit distance
 	 * @param isTurn It holds if the robot should make a turn or go straight
 	 */
-	public void travelOne(boolean isTurn) {
-		// Checks if we need to turn the robot.
-		// If no, then just move the robot forward. Else, take it all the way back to the beginning and turn it.
-		if (!isTurn ) {
-			pilot.travel(travelDistance);
-		}
-		else {
-			pilot.travel(-10* travelDistance);
-			pilot.rotate(RIGHT);
-			pilot.travel(travelDistance);
-			pilot.rotate(LEFT);
-			pilot.travel(travelDistance);
-		}
+	public void travelOne() {
 		
+		pilot.travel(travelDistance);
+	}
+	
+	public void rotateRight() {
+		pilot.travel(travelDistance);
+		pilot.rotate(RIGHT);
+		pilot.travel(travelDistance);
+		pilot.rotate(RIGHT);
+	}
+	
+	public void rotateLeft() {
+		pilot.travel(travelDistance);
+		pilot.rotate(LEFT);
+		pilot.travel(travelDistance);
+		pilot.rotate(LEFT);
 	}
 	
 	/**
@@ -168,6 +171,21 @@ public class Robot {
 	 */
 	public float getOFF() {
 		return off;
+	}
+	
+	
+	public float getColor() {
+		// Get the surface value
+		sampleProvider = colorSensor.getRGBMode();
+        sampleSize = sampleProvider.sampleSize();
+        
+        float value = getSample();
+        
+        return value;
+	}
+	
+	public void delay(int ms) {
+		Delay.msDelay(ms);
 	}
 	
 	/**

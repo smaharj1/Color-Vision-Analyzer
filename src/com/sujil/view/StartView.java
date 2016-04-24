@@ -5,9 +5,7 @@ import lejos.hardware.lcd.LCD;
 
 public class StartView {
 
-	// It holds the cursor position and the actual cursor
-	private final int CURSOR_X = 10;
-	private final String CURSOR = "<";
+	
 	
 	public StartView() {
 		initMenu();
@@ -16,12 +14,9 @@ public class StartView {
 	public void initMenu() {
 		LCD.clear();
 		
-		int x_coord = 0;
-		int y_coord = 0;
-		
-		LCD.drawString(CURSOR, CURSOR_X, 1); 
-		
+			
 		LCD.drawString("Welcome to K Means",0, 0);
+		LCD.drawString("Ready for scan? press Enter", 0, 1);
 		
 		
 		

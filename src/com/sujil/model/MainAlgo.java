@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import com.sujil.robot.Robot;
 
+import lejos.hardware.lcd.LCD;
+
 public class MainAlgo {
 	
 	private ArrayList<Pixel> boardPixels = new ArrayList<Pixel>();
@@ -25,7 +27,7 @@ public class MainAlgo {
 	
 	
 	private FileAccess fileAccess;
-	//private Robot robot;
+	private Robot robot;
 	private ArrayList<Pixel> scannedTable = new ArrayList<Pixel>();
 	
 	private static ArrayList<RuleNode> rules = new ArrayList<RuleNode> ();
@@ -33,38 +35,51 @@ public class MainAlgo {
 	Kmeans kmeans;
 	Kmeans kForDistance;
 	
-	public MainAlgo(String filename, /*Robot r,*/ Table table) {
+	public MainAlgo(String filename, Robot r, Table table, int Kval) {
 		fileAccess = new FileAccess(filename);
 		
-		//robot = r;
+		robot = r;
 
-		getBoard();
+		//getBoard();
 		
 		//scannedTable = table.getTable();
-		scannedTable = boardPixels;
+		scannedTable = table.getTable();
 		
 		// Now run the first K means clustering for color
-		kmeans = new Kmeans(7, scannedTable, false);
+		kmeans = new Kmeans(Kval, scannedTable, false);
 		kmeans.init();
 		kmeans.update();
 		
 		// Then print out the total # of clusters and total pixels in it
-		System.out.println("Total # of clusters: " + kmeans.getTotalClusters());
+		//System.out.println("Total # of clusters: " + kmeans.getTotalClusters());
+		
 		
 		for (Cluster cluster : kmeans.getClusters()) {
+			LCD.clear();
+			
 			Pixel topLeft = cluster.getTopLeft();
 			Pixel bottomRight = cluster.getBottomRight();
 			
-			System.out.println("TopLeft: " + topLeft.getX() + "  " + topLeft.getY());
-			System.out.println("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY());
+			//System.out.println("TopLeft: " + topLeft.getX() + "  " + topLeft.getY());
+			//System.out.println("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY());
+			
+			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
+			LCD.drawString("TopLeft: " + topLeft.getX() + "  " + topLeft.getY(), 0, 1);
+			LCD.drawString("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 2);
+			
+			robot.delay(2000);
 		}
 		
 		// Pause the LCD in the robot for some time (10 sec)
 		
 		// Runs the K means for distance
-		System.out.println("------------------XXXXXXXXXXXXXX-------------------");
-		System.out.println("Entering distance mode");
-		System.out.println("------------------XXXXXXXXXXXXXX-------------------");
+		//System.out.println("------------------XXXXXXXXXXXXXX-------------------");
+		//System.out.println("Entering distance mode");
+		//System.out.println("------------------XXXXXXXXXXXXXX-------------------");
+		LCD.clear();
+		LCD.drawString("DISTANCE MODE ON", 0, 0);
+		
+		robot.delay(3000);
 		// Now get all of the clusters and then, do the K means on each cluster
 		for (Cluster cluster : kmeans.getClusters()) {
 			kForDistance = new Kmeans(2, cluster.getPixels(), true);
@@ -72,14 +87,22 @@ public class MainAlgo {
 			kForDistance.update();
 			
 			// Prints out the total # of clusters and total pixels in it
-			System.out.println("Total # of clusters: " + kForDistance.getTotalClusters());
+			//System.out.println("Total # of clusters: " + kForDistance.getTotalClusters());
+			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
 			
+			int row = 0;
 			for (Cluster cls : kForDistance.getClusters()) {
 				Pixel topLeft = cls.getTopLeft();
 				Pixel bottomRight = cls.getBottomRight();
 				
-				System.out.println("TopLeft: " + topLeft.getY() + "  " + topLeft.getX());
-				System.out.println("BottomRight: " + bottomRight.getY() + "  " + bottomRight.getX());
+				
+				LCD.drawString("TopLeft: " + topLeft.getX() + "  " + topLeft.getY(), 0, row);
+				row++;
+				LCD.drawString("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, row);
+				row += 2;
+				
+				robot.delay(2000);
+				
 				// Runs forward search
 				startForwardSearch(cls);
 			}
@@ -114,7 +137,7 @@ public class MainAlgo {
 			
 		}
 		else {
-			System.out.println("Possible rule: " + possibleRules.get(0).getRHS());
+			System.out.println("Letter: " + possibleRules.get(0).getRHS());
 		}
 		
 	}
@@ -210,7 +233,7 @@ public class MainAlgo {
 	
 	
 	public static void main (String[] args) {
-		MainAlgo algo = new MainAlgo("rules.txt", /*new Robot(),*/ new Table());
+		//MainAlgo algo = new MainAlgo("rules.txt", /*new Robot(),*/ new Table());
 	}
 
 	
