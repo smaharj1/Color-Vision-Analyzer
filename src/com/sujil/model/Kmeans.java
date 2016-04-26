@@ -22,6 +22,8 @@ public class Kmeans {
 	// It holds the value if we are doing it for distance or color. False means color.
 	private boolean isWorkingCluster = false;
 	
+	private int iterations =0;
+	
 	/**
 	 * It initiates the algorithms with K number of clusters.
 	 * @param K It holds the total number of clusters to make
@@ -88,6 +90,14 @@ public class Kmeans {
 		
 	}
 
+	public void deleteCluster(int indexOf) {
+		clusters.remove(indexOf);
+	}
+	
+	public int getTotalIterations() {
+		return iterations;
+	}
+	
 	/**
 	 * Updates the clusters until the pixels are perfectly grouped together
 	 */
@@ -109,6 +119,8 @@ public class Kmeans {
 			
 			// Recalculate the centroid values 
 			recalculateCentroid();
+			
+			iterations++;
 			
 			// Check if the new values are same as old. If they are all same in all clusters, then break from the loop
 			boolean allCorrect = true;

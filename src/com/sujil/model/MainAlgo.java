@@ -61,7 +61,7 @@ public class MainAlgo {
 		
 		// Then print out the total # of clusters and total pixels in it
 		//System.out.println("Total # of clusters: " + kmeans.getTotalClusters());
-		LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(),0,0);
+		LCD.drawString(kmeans.getTotalClusters() + " # of clusters ",0,0);
 		
 		robot.delay(2000);
 		
@@ -75,9 +75,10 @@ public class MainAlgo {
 			//System.out.println("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY());
 			
 			
-			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
-			LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 1);
-			LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 2);
+			LCD.drawString(kmeans.getTotalClusters() + " # of clusters ", 0, 0);
+			LCD.drawString(kmeans.getTotalIterations() + " iterations", 0, 1);
+			LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 2);
+			LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 3);
 			
 			int button = Button.waitForAnyPress();
 			
@@ -120,8 +121,10 @@ public class MainAlgo {
 				Pixel bottomRight = cls.getBottomRight();
 				int row = 0;
 				
-				LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 0);
-				LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 1);
+				LCD.drawString(kForDistance.getTotalClusters() + " # of clusters: " , 0, 0);
+				LCD.drawString(kForDistance.getTotalIterations()+ " iterations", 0, 1);
+				LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 2);
+				LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 3);
 				
 				// Runs forward search
 				startForwardSearch(cls);
@@ -166,11 +169,11 @@ public class MainAlgo {
 		//System.out.println("Size of possible Rules is " + possibleRules.size());
 		if (possibleRules.isEmpty()) {
 			//System.out.println("Empty");
-			LCD.drawString("Empty", 0, 2);
+			LCD.drawString("Empty", 0, 4);
 		}
 		else {
 			//System.out.println("Letter: " + possibleRules.get(0).getRHS());
-			LCD.drawString("Letter: " + possibleRules.get(0).getRHS(), 0, 2);
+			LCD.drawString("Letter: " + possibleRules.get(0).getRHS(), 0, 4);
 		}
 		
 	}

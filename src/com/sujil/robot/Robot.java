@@ -268,7 +268,7 @@ public class Robot {
 	
 	public long getTime() {
 		
-		long time = (long) ((4.5/7) *1000);
+		long time = (long) ((1.693/7) *1000);
 		return time;
 	}
 	
