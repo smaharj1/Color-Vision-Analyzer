@@ -6,7 +6,8 @@ public class Table {
 
 	
 	public ArrayList<Pixel> data = new ArrayList<Pixel> ();
-
+	public Pixel[] pixel = new Pixel[25];
+	
 	public Table() {
 
 	}
@@ -18,5 +19,4 @@ public class Table {
 	public ArrayList<Pixel> getTable() {
 		return data;
 	}
-
 }

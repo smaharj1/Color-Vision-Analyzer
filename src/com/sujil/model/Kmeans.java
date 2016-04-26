@@ -3,6 +3,9 @@ package com.sujil.model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
+
 public class Kmeans {
 	// This holds the total number of clusters that the user wants
 	private int totalClusters;
@@ -61,15 +64,16 @@ public class Kmeans {
 		// Randomize the color value if it is color-based K means
 		else {
 			// Calculates the range of the color to consider
-			double range = (double) 7 / totalClusters;
+			double range = (double) 1 / totalClusters;
 			
 			// Loops through each and every cluster and adds the randomized centroid
 			for (int i=0; i < totalClusters; ++i) {
 				// Get the random value for each range i.e. add i*range for each random value got.
 				Random r = new Random();
-				//double randomValue = (i*range) + r.nextDouble() * (range);
+				double randomValue = (i*range) + r.nextDouble() * (range);
 				
-				double randomValue = i+1;
+				//double randomValue = i+1;
+				
 				//System.out.println("CENTROID: " + randomValue);
 				Pixel initCentroid = new Pixel(-1,-1, randomValue);
 				
@@ -116,10 +120,17 @@ public class Kmeans {
 					}
 				}
 				else {
-//					System.out.println("Cluster #: " + index);
-//					System.out.println("Previous centroid: " + previousCentroids.get(index).getColorValue());
-//					System.out.println("New centroid: " + clusters.get(index).getCentroid().getColorValue());
-//					System.out.println();
+					//System.out.println("Cluster #: " + index);
+					//System.out.println("Previous centroid: " + (float) previousCentroids.get(index).getColorValue());
+					//System.out.println("New centroid: " + clusters.get(index).getCentroid().getColorValue());
+					//System.out.println();
+					
+					double val = previousCentroids.get(index).getColorValue();
+					
+					if (Double.isNaN(val)) {
+						//System.out.println("Not a number");
+						break;
+					}
 					if (clusters.get(index).getCentroid().getColorValue() != previousCentroids.get(index).getColorValue()) {
 						allCorrect = false;
 					}

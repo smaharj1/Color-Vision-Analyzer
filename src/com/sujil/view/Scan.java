@@ -7,11 +7,12 @@ import com.sujil.robot.Robot;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
 import lejos.utility.TextMenu;
 
 // This class should be present always since 
 public class Scan {
-	private final int TOTAL = 10;
+	private final int TOTAL = 6;
 	private Robot robot;
 	
 	private Table table;
@@ -26,7 +27,19 @@ public class Scan {
 	public Scan() {
 		robot = new Robot();
 		table = new Table();
-		startScan();
+		//startScan();
+		
+		robot.startSensor();
+		robot.getColor();
+		for (int i =0; i < 6; i++) {
+			robot.travelOne();
+			float val = robot.getColor();
+			
+			LCD.drawString(val+"", 0, i);
+			table.addPixel(0, i, val);
+		}
+		
+		
 		
 		while(!Button.ESCAPE.isDown()) {
 			LCD.clear();
@@ -36,7 +49,11 @@ public class Scan {
 			
 			// Now, call MainAlgo.java which will handle the rest.
 			algo = new MainAlgo("rules.txt", robot, table, K);
+			
+			LCD.clear();
+			LCD.drawString("EXIT", 0, 0);
 		}
+		
 	}
 	
 	public int initiateKMenu() {
@@ -63,33 +80,46 @@ public class Scan {
 	public void startScan() {
 		int row = 0;
 		float color;
+		robot.startSensor();
 		
 		boolean loop = true;
 		boolean isRightDirection = true;
 		while (loop) {
+			
 			if (isRightDirection) {
+				LCD.clear();
+				robot.forward();
 				for (int index = 0; index < TOTAL; ++index ) {
-					robot.travelOne();
+					//robot.travelOne();
+					Delay.msDelay(robot.getTime());
 					color = robot.getColor();
 					
+					LCD.drawString(color+"", 0, index);
 					table.addPixel( row,  index, color);
 					
 					//System.out.println(row + "  " + index);
 				}
-				
+				robot.stop();
 				robot.rotateRight();
 			}
 			else {
+				LCD.clear();
+				robot.forward();
 				for (int index = TOTAL-1; index >= 0; --index) {
-					robot.travelOne();
+					//robot.travelOne();
+					Delay.msDelay(robot.getTime());
 					color = robot.getColor();
+					
+					LCD.drawString(color+"", 0, TOTAL - index);
 					
 					table.addPixel( row,  index, color);
 					//System.out.println(row + "  " + index);
 				}
+				robot.stop();
 				robot.rotateLeft();
 			}
 			
+			robot.delay(5000);
 			isRightDirection = !isRightDirection;
 			row++;
 			if (row == TOTAL) loop = false;

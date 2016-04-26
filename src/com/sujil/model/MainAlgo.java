@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import com.sujil.robot.Robot;
 
 import lejos.hardware.lcd.LCD;
+import lejos.utility.Delay;
 
 public class MainAlgo {
 	
@@ -52,7 +53,9 @@ public class MainAlgo {
 		
 		// Then print out the total # of clusters and total pixels in it
 		//System.out.println("Total # of clusters: " + kmeans.getTotalClusters());
+		LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(),0,0);
 		
+		robot.delay(2000);
 		
 		for (Cluster cluster : kmeans.getClusters()) {
 			LCD.clear();
@@ -63,11 +66,12 @@ public class MainAlgo {
 			//System.out.println("TopLeft: " + topLeft.getX() + "  " + topLeft.getY());
 			//System.out.println("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY());
 			
+			
 			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
 			LCD.drawString("TopLeft: " + topLeft.getX() + "  " + topLeft.getY(), 0, 1);
 			LCD.drawString("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 2);
 			
-			robot.delay(2000);
+					
 		}
 		
 		// Pause the LCD in the robot for some time (10 sec)
@@ -79,7 +83,7 @@ public class MainAlgo {
 		LCD.clear();
 		LCD.drawString("DISTANCE MODE ON", 0, 0);
 		
-		robot.delay(3000);
+		Delay.msDelay(2000);
 		// Now get all of the clusters and then, do the K means on each cluster
 		for (Cluster cluster : kmeans.getClusters()) {
 			kForDistance = new Kmeans(2, cluster.getPixels(), true);
@@ -90,23 +94,25 @@ public class MainAlgo {
 			//System.out.println("Total # of clusters: " + kForDistance.getTotalClusters());
 			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
 			
-			int row = 0;
+			
 			for (Cluster cls : kForDistance.getClusters()) {
+				LCD.clear();
 				Pixel topLeft = cls.getTopLeft();
 				Pixel bottomRight = cls.getBottomRight();
+				int row = 0;
 				
-				
-				LCD.drawString("TopLeft: " + topLeft.getX() + "  " + topLeft.getY(), 0, row);
+				LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, row);
 				row++;
-				LCD.drawString("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, row);
-				row += 2;
-				
-				robot.delay(2000);
+				LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, row);
 				
 				// Runs forward search
 				startForwardSearch(cls);
+				
+				Delay.msDelay(2000);
 			}
 		}
+		
+		return;
 
 	}
 	
@@ -134,10 +140,12 @@ public class MainAlgo {
 		
 		//System.out.println("Size of possible Rules is " + possibleRules.size());
 		if (possibleRules.isEmpty()) {
-			
+			//System.out.println("Empty");
+			LCD.drawString("Empty", 0, 0);
 		}
 		else {
-			System.out.println("Letter: " + possibleRules.get(0).getRHS());
+			//System.out.println("Letter: " + possibleRules.get(0).getRHS());
+			LCD.drawString("Letter: " + possibleRules.get(0).getRHS(), 0, 5);
 		}
 		
 	}
@@ -233,7 +241,7 @@ public class MainAlgo {
 	
 	
 	public static void main (String[] args) {
-		//MainAlgo algo = new MainAlgo("rules.txt", /*new Robot(),*/ new Table());
+		//MainAlgo algo = new MainAlgo("rules.txt", /*new Robot(),*/ new Table(), 8);
 	}
 
 	

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 
 import lejos.hardware.Sound;
+import lejos.utility.Delay;
 
 public class FileAccess {
 
@@ -36,12 +37,13 @@ public class FileAccess {
 		        //System.out.println(line);
 		        MainAlgo.addRule(line);
 		    }
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				Sound.beep();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			Sound.beep();
+		} catch (IOException e) {
+			e.printStackTrace();
+			Sound.beep();
+		}
 	}
 	
 		

@@ -32,7 +32,7 @@ public class Robot {
 	private double travelDistance = 0;
 	
 	// Records the speed of the robot
-	private int speed = 8;
+	private int speed = 7;
 	
 	// Handles the sensor ports and EV3Color sensors
 	private static Port colorSensorPort = SensorPort.S4;
@@ -57,12 +57,12 @@ public class Robot {
 
         // Gets the sample an returns it
         sampleProvider.fetchSample(sample, 0);
-        return sample[0];
+        return sample[0]+sample[1]+sample[2];
     }
 	
 	public Robot() {
 		pilot = new DifferentialPilot(5.42f, 9.6f, Motor.A, Motor.C, false);
-		travelDistance = (float) 0.6667;
+		travelDistance = (float) 4.5;
 		pilot.setTravelSpeed(speed);		
 	}
 	
@@ -182,6 +182,7 @@ public class Robot {
         float value = getSample();
         
         return value;
+		//return colorSensor.getColorID();
 	}
 	
 	public void delay(int ms) {
@@ -263,5 +264,19 @@ public class Robot {
 		LCD.drawString(""+pixelSize, 0, 4);
 		Delay.msDelay(1000);
 		
+	}
+	
+	public long getTime() {
+		
+		long time = (long) ((4.5/7) *1000);
+		return time;
+	}
+	
+	public void forward() {
+		pilot.forward();
+	}
+	
+	public void stop() {
+		pilot.stop();
 	}
 }
