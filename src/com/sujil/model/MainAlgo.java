@@ -9,7 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sujil.robot.Robot;
+import com.sujil.view.Scan;
 
+import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 
@@ -30,6 +32,7 @@ public class MainAlgo {
 	private FileAccess fileAccess;
 	private Robot robot;
 	private ArrayList<Pixel> scannedTable = new ArrayList<Pixel>();
+	private int Kval =0;
 	
 	private static ArrayList<RuleNode> rules = new ArrayList<RuleNode> ();
 	
@@ -46,6 +49,11 @@ public class MainAlgo {
 		//scannedTable = table.getTable();
 		scannedTable = table.getTable();
 		
+		this.Kval = Kval;
+
+	}
+	
+	public void performLejos() {
 		// Now run the first K means clustering for color
 		kmeans = new Kmeans(Kval, scannedTable, false);
 		kmeans.init();
@@ -68,10 +76,18 @@ public class MainAlgo {
 			
 			
 			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
-			LCD.drawString("TopLeft: " + topLeft.getX() + "  " + topLeft.getY(), 0, 1);
-			LCD.drawString("BottomRight: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 2);
+			LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 1);
+			LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 2);
 			
-					
+			int button = Button.waitForAnyPress();
+			
+			if (button == Button.ID_ENTER) {
+				// Start the scanning from the robot
+				continue;
+			}
+			else if (button == Button.ID_ESCAPE) {
+				return;
+			}
 		}
 		
 		// Pause the LCD in the robot for some time (10 sec)
@@ -86,13 +102,16 @@ public class MainAlgo {
 		Delay.msDelay(2000);
 		// Now get all of the clusters and then, do the K means on each cluster
 		for (Cluster cluster : kmeans.getClusters()) {
+			if (cluster.getPixels().size() <=1) {
+				continue;
+			}
 			kForDistance = new Kmeans(2, cluster.getPixels(), true);
 			kForDistance.init();
 			kForDistance.update();
 			
 			// Prints out the total # of clusters and total pixels in it
 			//System.out.println("Total # of clusters: " + kForDistance.getTotalClusters());
-			LCD.drawString("Total # of clusters: " + kmeans.getTotalClusters(), 0, 0);
+			LCD.drawString(kForDistance.getTotalClusters() + " # of clusters: " , 0, 0);
 			
 			
 			for (Cluster cls : kForDistance.getClusters()) {
@@ -101,19 +120,25 @@ public class MainAlgo {
 				Pixel bottomRight = cls.getBottomRight();
 				int row = 0;
 				
-				LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, row);
-				row++;
-				LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, row);
+				LCD.drawString("TL: " + topLeft.getX() + "  " + topLeft.getY(), 0, 0);
+				LCD.drawString("BR: " + bottomRight.getX() + "  " + bottomRight.getY(), 0, 1);
 				
 				// Runs forward search
 				startForwardSearch(cls);
 				
-				Delay.msDelay(2000);
+				int button = Button.waitForAnyPress();
+				
+				if (button == Button.ID_ENTER) {
+					// Start the scanning from the robot
+					continue;
+				}
+				else if (button == Button.ID_ESCAPE) {
+					return;
+				}
 			}
+			LCD.drawString("Cluster over", 0, 4);
+			Delay.msDelay(2000);
 		}
-		
-		return;
-
 	}
 	
 	public void startForwardSearch(Cluster cluster) {
@@ -141,11 +166,11 @@ public class MainAlgo {
 		//System.out.println("Size of possible Rules is " + possibleRules.size());
 		if (possibleRules.isEmpty()) {
 			//System.out.println("Empty");
-			LCD.drawString("Empty", 0, 0);
+			LCD.drawString("Empty", 0, 2);
 		}
 		else {
 			//System.out.println("Letter: " + possibleRules.get(0).getRHS());
-			LCD.drawString("Letter: " + possibleRules.get(0).getRHS(), 0, 5);
+			LCD.drawString("Letter: " + possibleRules.get(0).getRHS(), 0, 2);
 		}
 		
 	}

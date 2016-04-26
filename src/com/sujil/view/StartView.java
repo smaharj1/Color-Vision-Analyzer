@@ -19,20 +19,9 @@ public class StartView {
 		
 			
 		LCD.drawString("Welcome to K Means",0, 0);
-		LCD.drawString("Ready for scan? press Enter", 0, 1);
+		LCD.drawString("Press Enter", 0, 1);
 		
-		//Delay.msDelay(2000);
-		
-		/*
-		for (int i =0; i < 6; i++) {
-			robot.travelOne();
-			float val = robot.getColor();
-			
-			LCD.drawString(val+"", 0, i);
-		}
-		*/
-		//robot.delay(4000);
-		
+
 		int button = Button.waitForAnyPress();
 		
 		if (button == Button.ID_ENTER) {

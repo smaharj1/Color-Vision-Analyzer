@@ -12,8 +12,8 @@ public class Table {
 
 	}
 	
-	public void addPixel(int row , int col, double color) {
-		data.add(new Pixel((float) row, (float) col, color));
+	public void addPixel(float f , float g, double color) {
+		data.add(new Pixel((float) f, (float) g, color));
 	}
 	
 	public ArrayList<Pixel> getTable() {

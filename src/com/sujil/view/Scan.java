@@ -1,5 +1,7 @@
 package com.sujil.view;
 
+import java.util.ArrayList;
+
 import com.sujil.model.MainAlgo;
 import com.sujil.model.Pixel;
 import com.sujil.model.Table;
@@ -16,6 +18,7 @@ public class Scan {
 	private Robot robot;
 	
 	private Table table;
+	private ArrayList<Pixel> tableValues;
 		
 	// It holds the cursor position and the actual cursor
 	private final int CURSOR_X = 10;
@@ -27,31 +30,44 @@ public class Scan {
 	public Scan() {
 		robot = new Robot();
 		table = new Table();
-		//startScan();
+		startScan();
 		
-		robot.startSensor();
-		robot.getColor();
-		for (int i =0; i < 6; i++) {
-			robot.travelOne();
-			float val = robot.getColor();
+//		robot.startSensor();
+//		robot.getColor();
+//		for (int i =0; i < 6; i++) {
+//			robot.travelOne();
+//			float val = robot.getColor();
+//			
+//			LCD.drawString(val+"", 0, i);
+//			table.addPixel(0, i, val);
+//		}
 			
-			LCD.drawString(val+"", 0, i);
-			table.addPixel(0, i, val);
-		}
+		tableValues = table.getTable();
 		
-		
-		
+		// Ask for the K value
+		K = initiateKMenu();
+					
 		while(!Button.ESCAPE.isDown()) {
 			LCD.clear();
 			
-			// Ask for the K value
-			K = initiateKMenu();
+			Table changingTable = new Table();
+			for (int index = 0; index < tableValues.size(); index++) {
+				Pixel temp = tableValues.get(index);
+				changingTable.addPixel(temp.getX(), temp.getY(), temp.getColorValue());
+			}
+			
 			
 			// Now, call MainAlgo.java which will handle the rest.
-			algo = new MainAlgo("rules.txt", robot, table, K);
+			algo = new MainAlgo("rules.txt", robot, changingTable, K);
 			
-			LCD.clear();
-			LCD.drawString("EXIT", 0, 0);
+			algo.performLejos();
+			
+			K = initiateKMenu();
+			
+			if (K == -1) {
+				break;
+			}
+			
 		}
 		
 	}
@@ -70,6 +86,10 @@ public class Scan {
 		while (!Button.ENTER.isDown()) {
 			TextMenu testsMenu = new TextMenu(options, 1, "Select a test");
 			testsNumber = testsMenu.select();		
+			
+			if (Button.ESCAPE.isDown()) {
+				return -1;
+			}
 		}
 		
 		return testsNumber+2;
@@ -81,6 +101,7 @@ public class Scan {
 		int row = 0;
 		float color;
 		robot.startSensor();
+		robot.getColor();
 		
 		boolean loop = true;
 		boolean isRightDirection = true;
