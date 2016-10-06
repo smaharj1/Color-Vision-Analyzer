@@ -1,0 +1,128 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on https://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+  <link rel="stylesheet" href="stylesheets/github-dark.css">
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Color-vision-analyzer</title>
+  <meta name="description" content="Pseudo-Isochromatic Plates (PIPs) are used to test color vision/blindness. In a PIP, a character or number is rendered in one color set against a background of dots of other colors meant to be indistinguishable by someone who is color-blind. Someone who is not color-blind can pick off and identify the character or number rendered on a plate, whereas someone who is color-blind cannot. ">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Color-vision-analyzer</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Pseudo-Isochromatic Plates (PIPs) are used to test color vision/blindness. In a PIP, a character or number is rendered in one color set against a background of dots of other colors meant to be indistinguishable by someone who is color-blind. Someone who is not color-blind can pick off and identify the character or number rendered on a plate, whereas someone who is color-blind cannot. </p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/smaharj1/Color-Vision-Analyzer/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/smaharj1/Color-Vision-Analyzer/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/smaharj1/Color-Vision-Analyzer" class="code">View Color-vision-analyzer on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>
+<a id="color-vision-analyzer" class="anchor" href="#color-vision-analyzer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Color-Vision-Analyzer</h1>
+
+<p>Pseudo-Isochromatic Plates (PIPs) are used to test color vision/blindness. In a PIP, a character or number is rendered in one color set against a background of dots of other colors meant to be indistinguishable by someone who is color-blind. Someone who is not color-blind can pick off and identify the character or number rendered on a plate, whereas someone who is color-blind cannot. </p>
+
+<h1>
+<a id="class-description" class="anchor" href="#class-description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Class Description:</h1>
+
+<h2>
+<a id="ev3-classes" class="anchor" href="#ev3-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EV3 Classes:</h2>
+
+<ul>
+<li>  <strong>Robot.java:</strong> It handles all of the functions that the Lejos EV3 robot performs. The functions help the robot to move forward or make turns. </li>
+<li> Sound Functions: soundON(), soundOFF(), soundSuccess(), soundFailure() produces different types of beeps varying the sounds when the pixel is on, off, success, failure.</li>
+<li> Color sensor Functions: startSensor(), recordON(), recordOFF(), readColor(), isON(), and readDistance() functions help start the color sensor, record color statistics for ON and OFF, read the color, check if the pixel is ON, and calibrate the size of the pixel. </li>
+<li> Travel Functions: travelOne() function helps to move the robot to a 1 unit distance according to the size of the board and the pixel. Travel() helps to move the robot forward.</li>
+</ul>
+
+<h2>
+<a id="java-classes" class="anchor" href="#java-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Java Classes:</h2>
+
+<ul>
+<li>
+<strong>FileAccess.java:</strong> It handles the file access of the program. It accesses the file and fills in the rules into the algorithm so that we can start the algorithm functions.</li>
+<li>
+<strong>Pixel.java:</strong> It holds the coordinates of the box in the grid. As the definition suggests, it represents one pixel. It holds the coordinates of the pixel and color of that pixel.</li>
+<li>
+<strong>RuleNode.java:</strong> It handles the string parsing to parse the string from the file to actual rules of logic. It separates the Left Hand Side with the Right Hand Side and makes it available for the program to use anytime it needs.</li>
+<li>
+<strong>MainAlgo.java:</strong> It handles the forward search algorithm that the user requests. </li>
+<li>
+<strong>Kmeans.java:</strong> It handles the K means clustering algorithm for both color-based and distance based algorithms.</li>
+<li>
+<strong>Cluster.java:</strong> It holds the information of a single cluster. It represents the centroid and all of the pixels currently in that cluster.</li>
+<li>
+<strong>Table.java:</strong> It holds all of the pixels of the board. It can be easily called from any classes to get the pixels.</li>
+</ul>
+
+<h1>
+<a id="view-classes" class="anchor" href="#view-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>View Classes:</h1>
+
+<ul>
+<li>
+<strong>StartView.java:</strong> It is the introductory view of the program. It suggests the user to press enter to start scanning. At this point, the user should have already configured the location of the robot.</li>
+<li>
+<strong>Scan.java:</strong> It scans the whole board and then provides the user an option to choose K value. It ranges from 2 to 8.</li>
+</ul>
+
+<h1>
+<a id="ai-algorithms" class="anchor" href="#ai-algorithms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AI Algorithms:</h1>
+
+<ul>
+<li>
+<strong>Forward search:</strong> This search traverses through the table and updates the potential characters according to the ON or OFF value of the pixel. It reaches an ultimate decision following through the logic.</li>
+<li>
+<strong>K means clustering:</strong> This algorithm clusters similar pixels to a cluster based on their color and their distance from each other. </li>
+</ul>
+
+<h1>
+<a id="classes-using-ai-algorithm" class="anchor" href="#classes-using-ai-algorithm" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Classes using AI algorithm:</h1>
+
+<ul>
+<li>
+<strong>MainAlgo.java:</strong> This class has forward() function which performs the forward search. It also has performLejos() for initiating the Kmeans clustering algorithm.</li>
+<li>
+<strong>Kmeans.java:</strong> This class has the core functionalities of K means clustering algorithm.</li>
+</ul>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/smaharj1" class="avatar"><img src="https://avatars0.githubusercontent.com/u/8810802?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/smaharj1">smaharj1</a> maintains <a href="https://github.com/smaharj1/Color-Vision-Analyzer">Color-vision-analyzer</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/smaharj1/Color-Vision-Analyzer/tarball/master" class="tar">tar</a><a href="https://github.com/smaharj1/Color-Vision-Analyzer/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
